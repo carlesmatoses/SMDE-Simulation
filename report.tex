@@ -44,10 +44,42 @@ Please observe the conference page limits.
 % In the Marathon, are enough resources for the runners? (WC, water sources, meals…), there are some unexpected queues, what about make the race on august?
 We are provided with three marathon results, from a Keggle dataset, on the years 2015, 2016 and 2017. The data is structured in a way that we have the runners' information, the time they took to get to interest points and the time they took to finish the race. Some of the most relevant variables we are provided are: the age, the genre and the city of origin. We believe this characteristics have a direct impact on the performance of the runners.
 
-By reading the paper \cite{b8}
+By reading the paper \cite{b8}, we concluded that, effectivelly, enviormental conditions have a direct impact on the performance of the runners. The paper states that the temperature has a positive impact (longer races) and high humidity and high wind speed have a negative impact on the performance of the runners (faster races).
 
+% Some ideas about this (since i do not know what the proffessor wants):
+% - The temperature analysis only takes into account a small range of 5◦C to 24.5◦C, maybe results would be different if we consider hotter enviorments.
+% - The wind speed analysis does not seem to explain wind direction. Maybe its usually the same direction in this place
+% 
 \section{System description, introduction}
+% Describe the system to be modeled (not the problem, not the data), other elements must be described on the subsequent sections of the document.
+The system to be modeled is the ``Barcelona marathon''. A system refers to ``A collection of entities, characterized by attributes, that act and interact together toward the accomplishment of some logical end''. 
+
+In the Barcelona marathon we have runners of different levels and ages, that come from different cities and have different genres. The marathon is affected by environmental conditions such as rainfall, temperature and wind speed. The runners need supplies such as water, food and medical supplies to finish the marathon. The purpose of the system is to ensure runners complete the marathon  while maintaining safety and competitivity. 
+
+
 \section{Model specification}
+% We will build a simulation model that represents a set of runners and how the climate conditions affect them.
+% Clearly define the model entities, operations and processes that defines the behavior of the model. We must use here DEVS, Petri Nets or SDL, but since we are not going to use those formal languages, define a flow diagram to simplify the definition of the model. Since we are using GPSS you can use the GPSS icons of the language.
+
+For this model, the entities and attributes are the following:
+
+\begin{itemize}
+    \item \textbf{Runners}: The runners are the main entities in the system. They have attributes such as age, genre and city of origin. They interact with the system by running the marathon.
+    \item \textbf{Rainfall}: The rainfall is an environmental attribute that affects the performance of the runners. It has attributes such as intensity and duration.
+    \item \textbf{Temperature}: The temperature is an environmental attribute that affects the performance of the runners. It has attributes such as intensity and duration.
+    \item \textbf{Supplies}: The supplies are the resources that the runners need to finish the marathon. They have attributes such as water, food and medical supplies.
+\end{itemize}
+
+The oparations of the model will be reduced to runners arriving at the next interest point. The processes of the model will be the following:
+\begin{itemize}
+    \item \textbf{Begins running}: The runner starts at the starting line and begins running.
+    \item \textbf{Arrives interest point}: The runner reaches a the next interest point (each 5 kilometers). After the starting point we will have the following interest points: 5km, 10km, 15km, 20km, 25km, 30km, 35km, 40km and the finish line at  42.195 km.
+    \item \textbf{Modifies pace}: The runner adjusts their speed due to high temperature fatigue or other causes.
+    \item \textbf{Ends running}: The runner finishes the race.
+\end{itemize}
+
+The model purpose differs from the system purpose. We aim to predict the consequences of the environmental conditions on the performance of the runners. The model will help us understand how the rainfall, heat and other variables affects the performance of the runners.
+
 \subsection{Systemic Structural, Systemic Data and Simplifying Hypotheses}
 \section{Coding}
 \subsection{Data}
