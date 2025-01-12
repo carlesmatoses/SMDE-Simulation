@@ -66,12 +66,16 @@ In summary, the system comprises the marathon course, checkpoints, and resupply 
 
 For this model, the entities and attributes are the following:
 
-% TODO: esto esta mal, lo tendremos que ajustar a nuestro modelo
+% TODO: 
+% - carles: esto esta mal, lo tendremos que ajustar a nuestro modelo
+% - carles: lo he arreglado un poco añadiendo nuevos atributos y eliminando otros.
 \begin{itemize}
     \item \textbf{Runners}: The runners are the main entities in the system. They have attributes such as age, genre, and city of origin. They interact with the system by running the marathon.
-    \item \textbf{Rainfall}: The rainfall is an environmental attribute that affects the performance of the runners. It has attributes such as intensity and duration.
-    \item \textbf{Temperature}: The temperature is an environmental attribute that affects the performance of the runners. It has attributes such as intensity and duration.
-    \item \textbf{Supplies}: The supplies are the resources that the runners need to finish the marathon. They have attributes such as water, food and medical supplies.
+    \item \textbf{Rainfall}: The rainfall is an environmental attribute that affects the performance of the runners.
+    \item \textbf{Temperature}: The temperature is an environmental attribute that affects the performance of the runners.
+    \item \textbf{Wind}: The wind is an environmental attribute .
+    \item \textbf{Humidity}: The humidity is an environmental attribute.
+    \item \textbf{Level}: The level of the runner is determined by the time it takes to finish the first 5. The standard deviation of runners dependens on they're level. 
 \end{itemize}
 
 The operations of the model will be reduced to runners arriving at the end line. The processes of the model will be the following:
