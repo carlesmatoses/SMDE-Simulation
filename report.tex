@@ -80,11 +80,7 @@ The oparations of the model will be reduced to runners arriving at the end line.
 In this procecss, the model will use a normal distributed random variable to determine the time it takes for a runner to finish. We created different time ranges to decide the level of a runner. The ``Elite'' runners tend to run 5 km in less than 18 minutes, the ``hobby'' runners take more than 18 minutes and less than 25 and ``new'' runners take more than 25 minuts.
 
 The model purpose differs from the system purpose. We aim to predict the consequences of the environmental conditions on the performance of the runners. The model will help us understand how the rainfall, heat and other variables affects the performance of the runners.
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=\linewidth]{figs/elite_hobby_new_standar_deviation.png}}
-\caption{Standard deviation of race times for elite, hobby, and new runners.}
-\label{fig:elite_hobby_new_standar_deviation}
-\end{figure}
+
 
 % I need to know the time required for an elite male runner to finish the race. and then the female elite runner.
 
@@ -94,8 +90,21 @@ The model purpose differs from the system purpose. We aim to predict the consequ
     \item \textbf{SH\_01}: The runners will keep a constant speed over the race. Only the required time to finish the race will metter.
     \item \textbf{SH\_02}: Heat, wind and rain will be combined into a single value computed by a formula.
     \item \textbf{SS\_01}: The runners will be spleeted in three ``level'' groups based on the first 5 kilometers performance.
-    \item \textbf{SD\_04}: The runners will not be affected by ethnics.
+    \item \textbf{SD\_01}: The runners will not be affected by ethnics.
+    \item \textbf{SD\_02}: The time is transformed with a logarithm function to make it more normal. The results are shown in the figure \ref{fig:elite_hobby_new_standar_deviation} and \ref{fig:new_qq}. The model will ignore the outliers.
 \end{itemize}
+
+\begin{figure}[htbp]
+    \centerline{\includegraphics[width=\linewidth]{figs/elite_hobby_new_standar_deviation.png}}
+    \caption{Standard deviation of race times for elite, hobby, and new runners.}
+    \label{fig:elite_hobby_new_standar_deviation}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centerline{\includegraphics[width=\linewidth]{figs/elite_hobby_new_qq.png}}
+    \caption{Q-Q plot for new runners.}
+    \label{fig:new_qq}
+\end{figure}
 
 \section{Coding}
 \subsection{Data}
