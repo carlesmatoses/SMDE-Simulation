@@ -1,6 +1,7 @@
 library(dplyr)
 
 h2s <- function(x) as.numeric(strptime(x, format="%H:%M:%S") - as.POSIXct(format(Sys.Date())), units="secs")
+level <- function(x) if (x < 18) { "Elite" } else if (x >= 500) { "New" } else { "Hobby" }
 
 process_data <- function(file) read.csv(file) %>% mutate(
   X5K = h2s(X5K),
@@ -18,7 +19,8 @@ process_data <- function(file) read.csv(file) %>% mutate(
   City = as.factor(City),
   State = as.factor(State),
   Country = as.factor(Country),
-  AgeRange = as.integer(Age/5) * 5
+  AgeRange = as.integer(Age/5) * 5,
+  LogTime = log(Official.Time),
 )
 
 # 1 Read data
@@ -30,6 +32,8 @@ m17 <- process_data("./Data/marathon_results_2017.csv")
 hist(m15$Official.Time)
 hist(m16$Official.Time)
 hist(m17$Official.Time)
+
+max(m15$Official.Time)
 
 # Age distributions
 hist(m15$Age, breaks = 16)
@@ -65,5 +69,21 @@ qqnorm(log(m15.sub60[m15.sub60$M.F == "M", "Official.Time"]))
 hist(log(m15.sub60[m15.sub60$M.F == "F", "Official.Time"]))
 qqnorm(log(m15.sub60[m15.sub60$M.F == "F", "Official.Time"]))
 
-summary(m15.sub60$Pace)
-sd(m15.sub60$Pace)
+summary(m15$Pace)
+sd(m15$Pace)
+
+elites <- m15[m15$X5K < 18*60, "LogTime"]
+hobby <- m15[m15$X5K >= 18*60 & m15$X5K < 25*60, "LogTime"]
+news <- m15[m15$X5K >= 25*60, "LogTime"]
+elites <- elites[complete.cases(elites)]
+hobby <- hobby[complete.cases(hobby)]
+news <- news[complete.cases(news)]
+summary(elites)
+summary(elites[complete.cases(elites)])
+sd(elites)
+summary(hobby)
+sd(hobby)
+summary(news)
+sd(news)
+
+max(m15$Official.Time[complete.cases(m15$Official.Time)])
