@@ -70,17 +70,26 @@ For this model, the entities and attributes are the following:
     \item \textbf{Supplies}: The supplies are the resources that the runners need to finish the marathon. They have attributes such as water, food and medical supplies.
 \end{itemize}
 
-The oparations of the model will be reduced to runners arriving at the next interest point. The processes of the model will be the following:
+The oparations of the model will be reduced to runners arriving at the end line. The processes of the model will be the following:
 \begin{itemize}
+    \item \textbf{Generate runner}: The model will generate a runner .
     \item \textbf{Begins running}: The runner starts at the starting line and begins running.
-    \item \textbf{Arrives interest point}: The runner reaches a the next interest point (each 5 kilometers). After the starting point we will have the following interest points: 5km, 10km, 15km, 20km, 25km, 30km, 35km, 40km and the finish line at  42.195 km.
-    \item \textbf{Modifies pace}: The runner adjusts their speed due to high temperature fatigue or other causes.
     \item \textbf{Ends running}: The runner finishes the race.
 \end{itemize}
 
+In this procecss, the model will use a normal distributed random variable to determine the time it takes for a runner to finish. We created different time ranges to decide the level of a runner. The ``Elite'' runners tend to run 5 km in less than 18 minutes, the ``hobby'' runners take more than 18 minutes and less than 25 and ``new'' runners take more than 25.
+
 The model purpose differs from the system purpose. We aim to predict the consequences of the environmental conditions on the performance of the runners. The model will help us understand how the rainfall, heat and other variables affects the performance of the runners.
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{figs/elite_hobby_new_standar_deviation.png}}
+\caption{Standard deviation of race times for elite, hobby, and new runners.}
+\label{fig:elite_hobby_new_standar_deviation}
+\end{figure}
+
+% I need to know the time required for an elite male runner to finish the race. and then the femail elite runner.
 
 \subsection{Systemic Structural, Systemic Data and Simplifying Hypotheses}
+
 \section{Coding}
 \subsection{Data}
 \section{Definition of the experimental framework}
