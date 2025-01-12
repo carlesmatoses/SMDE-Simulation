@@ -42,9 +42,9 @@ Please observe the conference page limits.
 \section{Problem description}
 % add the issues you detect. 
 % In the Marathon, are enough resources for the runners? (WC, water sources, meals…), there are some unexpected queues, what about make the race on august?
-We are provided with three marathon results, from a Keggle dataset, on the years 2015, 2016 and 2017. The data is structured in a way that we have the runners' information, the time they took to get to interest points and the time they took to finish the race. Some of the most relevant variables we are provided are: the age, the gender and the city of origin. We believe this characteristics have a direct impact on the performance of the runners.
+We are provided with three marathon results, from a Kaggle dataset, on the years 2015, 2016 and 2017. The data is structured in a way that we have the runners' information, the time they took to get to interest points and the time they took to finish the race. Some of the most relevant variables we are provided are: the age, the gender and the city of origin. We believe this characteristics have a direct impact on the performance of the runners.
 
-By reading the paper \cite{b8}, we concluded that, effectivelly, enviormental conditions have a direct impact on the performance of the runners. The paper states that the temperature has a positive impact (longer races) and high humidity and high wind speed have a negative impact on the performance of the runners (faster races).
+Reading the paper \cite{b8}, we concluded that, effectively, environmental conditions have a direct impact on the performance of runners. The paper states that the temperature has a positive impact (longer races) and high humidity and high wind speed have a negative impact on the performance of the runners (faster races).
 
 % Some ideas about this (since i do not know what the proffessor wants):
 % - The temperature analysis only takes into account a small range of 5◦C to 24.5◦C, maybe results would be different if we consider hotter enviorments.
@@ -52,12 +52,13 @@ By reading the paper \cite{b8}, we concluded that, effectivelly, enviormental co
 % 
 \section{System description, introduction}
 % Describe the system to be modeled (not the problem, not the data), other elements must be described on the subsequent sections of the document.
-% Do we need to define what a system is?
-The system to be modeled is the ``Barcelona marathon''. A system refers to ``A collection of entities, characterized by attributes, that act and interact together toward the accomplishment of some logical end''. 
+% Do we need to define what a system is? I don't think so
+The system to be modelled is the ``Barcelona Marathon''. This marathon involves runners of different skill levels, ages, and genders, coming from various cities. The event is influenced by environmental factors such as rainfall and temperature, all of which can impact runner performance. 
 
-In the Barcelona marathon we have runners of different levels and ages, that come from different cities and have different genres. The marathon is affected by environmental conditions such as rainfall, temperature and wind speed. The runners need supplies such as water, food and medical supplies to finish the marathon. The purpose of the system is to ensure runners complete the marathon  while maintaining safety and competitivity.
+Runners rely on essential supplies, including water, food, and medical assistance, to complete the marathon safely. The course is structured as a linear system, where participants progress from one checkpoint to the next. Along the way, they encounter resupply points, which have limited capacities. If demand exceeds supply, queues may form, potentially delaying runners. Environmental conditions also play a significant role in the system, affecting both individual runner performance and the overall flow of the event.
 
-This is a fairly simple linear system in which runners advance from one checkpoint to another. At certain points runners need to access resupply points which have limited capacities and an form queues if they aren't able to handle enough capacity. Runners advance from checkpoint to checkpoint until they reach the end of the race. The final times of the runners are also affected by environmental effects like temperature, rainfall and wind speed.
+In summary, the system comprises the marathon course, checkpoints, and resupply points, along with the interactions between runners, resources, and environmental conditions.
+
 
 \section{Model specification}
 % We will build a simulation model that represents a set of runners and how the climate conditions affect them.
@@ -66,22 +67,22 @@ This is a fairly simple linear system in which runners advance from one checkpoi
 For this model, the entities and attributes are the following:
 
 \begin{itemize}
-    \item \textbf{Runners}: The runners are the main entities in the system. They have attributes such as age, genre and city of origin. They interact with the system by running the marathon.
+    \item \textbf{Runners}: The runners are the main entities in the system. They have attributes such as age, genre, and city of origin. They interact with the system by running the marathon.
     \item \textbf{Rainfall}: The rainfall is an environmental attribute that affects the performance of the runners. It has attributes such as intensity and duration.
     \item \textbf{Temperature}: The temperature is an environmental attribute that affects the performance of the runners. It has attributes such as intensity and duration.
     \item \textbf{Supplies}: The supplies are the resources that the runners need to finish the marathon. They have attributes such as water, food and medical supplies.
 \end{itemize}
 
-The oparations of the model will be reduced to runners arriving at the end line. The processes of the model will be the following:
+The operations of the model will be reduced to runners arriving at the end line. The processes of the model will be the following:
 \begin{itemize}
     \item \textbf{Generate runner}: The model will generate a runner .
     \item \textbf{Begins running}: The runner starts at the starting line and begins running.
     \item \textbf{Ends running}: The runner finishes the race.
 \end{itemize}
 
-In this procecss, the model will use a normal distributed random variable to determine the time it takes for a runner to finish. We created different time ranges to decide the level of a runner. The ``Elite'' runners tend to run 5 km in less than 18 minutes, the ``hobby'' runners take more than 18 minutes and less than 25 and ``new'' runners take more than 25 minuts.
+In this process, the model will use a normal distributed random variable to determine the time it takes a runner to finish. We created different time ranges to decide the level of a runner. The ``Elite'' runners tend to run 5 km in less than 18 minutes, the ``hobby'' runners take more than 18 minutes and less than 25 and ``new'' runners take more than 25 minutes.
 
-The model purpose differs from the system purpose. We aim to predict the consequences of the environmental conditions on the performance of the runners. The model will help us understand how the rainfall, heat and other variables affects the performance of the runners.
+The model purpose differs from the system purpose. We aim to predict the consequences of the environmental conditions on the performance of the runners. The model will help us understand how the rainfall, heat, and other variables affects the performance of the runners.
 
 
 % I need to know the time required for an elite male runner to finish the race. and then the female elite runner.
@@ -89,12 +90,49 @@ The model purpose differs from the system purpose. We aim to predict the consequ
 \subsection{Systemic Structural, Systemic Data and Simplifying Hypotheses}
 
 \begin{itemize}
-    \item \textbf{SH\_01}: The runners will keep a constant speed over the race. Only the required time to finish the race will metter.
+    \item \textbf{SH\_01}: The runners will keep a constant speed over the race. Only the required time to finish the race will matter.
     \item \textbf{SH\_02}: Heat, wind and rain will be combined into a single value computed by a formula.
-    \item \textbf{SS\_01}: The runners will be spleeted in three ``level'' groups based on the first 5 kilometers performance.
+    \item \textbf{SS\_01}: The runners will be split in three ``level'' groups based on the performance of the first 5 km.
     \item \textbf{SD\_01}: The runners will not be affected by ethnics.
     \item \textbf{SD\_02}: The time is transformed with a logarithm function to make it more normal. The results are shown in the figure \ref{fig:elite_hobby_new_standar_deviation} and \ref{fig:new_qq}. The model will ignore the outliers.
+    \item \textbf{SD\_03}: Temperature humidity and wind speed will be combined into three categorical variables (low, medium, high) based on the paper \cite{b8} shown on table \ref{tab:environmental_impact}.
 \end{itemize}
+
+\begin{table}[htbp]
+\caption{Environmental Impact on Marathon Performance}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{} & \textbf{MAN} & \textbf{WOMAN} \\
+\hline
+\textbf{Humidity} & & \\
+\hline
+low & 0, 0 & 0, 0 \\
+\hline
+medium & -1.73, -1.92, -1.54 & -1.74, -2.04, -1.45 \\
+\hline
+high & -2.11, -2.31, -1.90 & -0.90, -1.24, -0.57 \\
+\hline
+\textbf{Temperature} & & \\
+\hline
+low & 0, 0 & 0, 0 \\
+\hline
+medium & 1.19, 1.00, 1.38 & 1.38, 1.09, 1.67 \\
+\hline
+high & 7.73, 7.50, 7.97 & 7.78, 7.37, 8.19 \\
+\hline
+\textbf{Wind Speed} & & \\
+\hline
+low & 0, 0 & 0, 0 \\
+\hline
+medium & -3.18, -3.39, -2.98 & -1.90, -2.22, -1.57 \\
+\hline
+high & -4.92, -5.12, -4.73 & -0.87, -1.18, -0.57 \\
+\hline
+\end{tabular}
+\label{tab:environmental_impact}
+\end{center}
+\end{table}
 
 \begin{figure}[htbp]
     \centerline{\includegraphics[width=\linewidth]{figs/elite_hobby_new_standar_deviation.png}}
@@ -127,7 +165,5 @@ The model purpose differs from the system purpose. We aim to predict the consequ
 
 \end{thebibliography}
 \vspace{12pt}
-\color{red}
-IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
 
 \end{document}
