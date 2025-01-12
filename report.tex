@@ -42,7 +42,7 @@ Please observe the conference page limits.
 \section{Problem description}
 % add the issues you detect. 
 % In the Marathon, are enough resources for the runners? (WC, water sources, meals…), there are some unexpected queues, what about make the race on august?
-We are provided with three marathon results, from a Keggle dataset, on the years 2015, 2016 and 2017. The data is structured in a way that we have the runners' information, the time they took to get to interest points and the time they took to finish the race. Some of the most relevant variables we are provided are: the age, the genre and the city of origin. We believe this characteristics have a direct impact on the performance of the runners.
+We are provided with three marathon results, from a Keggle dataset, on the years 2015, 2016 and 2017. The data is structured in a way that we have the runners' information, the time they took to get to interest points and the time they took to finish the race. Some of the most relevant variables we are provided are: the age, the gender and the city of origin. We believe this characteristics have a direct impact on the performance of the runners.
 
 By reading the paper \cite{b8}, we concluded that, effectivelly, enviormental conditions have a direct impact on the performance of the runners. The paper states that the temperature has a positive impact (longer races) and high humidity and high wind speed have a negative impact on the performance of the runners (faster races).
 
@@ -57,12 +57,7 @@ The system to be modeled is the ``Barcelona marathon''. A system refers to ``A c
 
 In the Barcelona marathon we have runners of different levels and ages, that come from different cities and have different genres. The marathon is affected by environmental conditions such as rainfall, temperature and wind speed. The runners need supplies such as water, food and medical supplies to finish the marathon. The purpose of the system is to ensure runners complete the marathon  while maintaining safety and competitivity.
 
-% Ignasi addition
-In the system to be modeled we choose to focus on simulating elite runners, both male and female, and investigating how weather and resource availability will affect the end result of the race. Our goal is to minimize the potential time that runners will take to complete the race.
-
 This is a fairly simple linear system in which runners advance from one checkpoint to another. At certain points runners need to access resupply points which have limited capacities and an form queues if they aren't able to handle enough capacity. Runners advance from checkpoint to checkpoint until they reach the end of the race. The final times of the runners are also affected by environmental effects like temperature, rainfall and wind speed.
-% end addition
-
 
 \section{Model specification}
 % We will build a simulation model that represents a set of runners and how the climate conditions affect them.
