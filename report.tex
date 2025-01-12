@@ -66,11 +66,16 @@ In summary, the system comprises the marathon course, checkpoints, and resupply 
 
 For this model, the entities and attributes are the following:
 
+% TODO: 
+% - carles: esto esta mal, lo tendremos que ajustar a nuestro modelo
+% - carles: lo he arreglado un poco añadiendo nuevos atributos y eliminando otros.
 \begin{itemize}
     \item \textbf{Runners}: The runners are the main entities in the system. They have attributes such as age, genre, and city of origin. They interact with the system by running the marathon.
-    \item \textbf{Rainfall}: The rainfall is an environmental attribute that affects the performance of the runners. It has attributes such as intensity and duration.
-    \item \textbf{Temperature}: The temperature is an environmental attribute that affects the performance of the runners. It has attributes such as intensity and duration.
-    \item \textbf{Supplies}: The supplies are the resources that the runners need to finish the marathon. They have attributes such as water, food and medical supplies.
+    \item \textbf{Rainfall}: The rainfall is an environmental attribute that affects the performance of the runners.
+    \item \textbf{Temperature}: The temperature is an environmental attribute that affects the performance of the runners.
+    \item \textbf{Wind}: The wind is an environmental attribute .
+    \item \textbf{Humidity}: The humidity is an environmental attribute.
+    \item \textbf{Level}: The level of the runner is determined by the time it takes to finish the first 5. The standard deviation of runners dependens on they're level. 
 \end{itemize}
 
 The operations of the model will be reduced to runners arriving at the end line. The processes of the model will be the following:
@@ -92,42 +97,44 @@ The model purpose differs from the system purpose. We aim to predict the consequ
 \begin{itemize}
     \item \textbf{SH\_01}: The runners will keep a constant speed over the race. Only the required time to finish the race will matter.
     \item \textbf{SH\_02}: Heat, wind and rain will be combined into a single value computed by a formula.
+    \item \textbf{SH\_03}: Temperature wind and humidity change over the day, usually there is more wind later on the day than at morning, temperatures rise and humidity drops. The model will ignore this fact to eventually decreese as the sun gets down. The model will not account for this behaviour and will only take the average values of the day.
     \item \textbf{SS\_01}: The runners will be split in three ``level'' groups based on the performance of the first 5 km.
-    \item \textbf{SD\_01}: The runners will not be affected by ethnics.
-    \item \textbf{SD\_02}: The time is transformed with a logarithm function to make it more normal. The results are shown in the figure \ref{fig:elite_hobby_new_standar_deviation} and \ref{fig:new_qq}. The model will ignore the outliers.
+    \item \textbf{SD\_01}: The runners will not be affected by ethnics or age. An Elite runner with 70 years will be classified based on the time it takes to finish the first 5 km and not his status.
+    \item \textbf{SD\_02}: The time is transformed with a logarithm function to make it more normal. The results of the shapiro-wilk test and the  figures \ref{fig:elite_hobby_new_standar_deviation} and \ref{fig:new_qq} show that only elite runners follow a normal distribution. The model will ignore the outliers.
     \item \textbf{SD\_03}: Temperature humidity and wind speed will be combined into three categorical variables (low, medium, high) based on the paper \cite{b8} shown on table \ref{tab:environmental_impact}.
 \end{itemize}
 
+% TODO: maybe remove the 
 \begin{table}[htbp]
 \caption{Environmental Impact on Marathon Performance}
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
-\textbf{} & \textbf{MAN} & \textbf{WOMAN} \\
+\textbf{} & \textbf{MAN: mean, std. dev.} & \textbf{WOMAN: mean, std. dev.} \\
 \hline
 \textbf{Humidity} & & \\
 \hline
 low & 0, 0 & 0, 0 \\
 \hline
-medium & -1.73, -1.92, -1.54 & -1.74, -2.04, -1.45 \\
+medium & -1.73, 0.22 & -1.74, 0.28 \\
 \hline
-high & -2.11, -2.31, -1.90 & -0.90, -1.24, -0.57 \\
+high & -2.11, 0.2 & -0.90, 0.34 \\
 \hline
 \textbf{Temperature} & & \\
 \hline
 low & 0, 0 & 0, 0 \\
 \hline
-medium & 1.19, 1.00, 1.38 & 1.38, 1.09, 1.67 \\
+medium & 1.19, 0.19 & 1.38, 0.23 \\
 \hline
-high & 7.73, 7.50, 7.97 & 7.78, 7.37, 8.19 \\
+high & 7.73, 0.18 & 7.78, 0.38 \\
 \hline
 \textbf{Wind Speed} & & \\
 \hline
 low & 0, 0 & 0, 0 \\
 \hline
-medium & -3.18, -3.39, -2.98 & -1.90, -2.22, -1.57 \\
+medium & -3.18, 0.2 & -1.90, 0.32 \\
 \hline
-high & -4.92, -5.12, -4.73 & -0.87, -1.18, -0.57 \\
+high & -4.92, 0.2 & -0.87, 0.3 \\
 \hline
 \end{tabular}
 \label{tab:environmental_impact}
@@ -146,11 +153,127 @@ high & -4.92, -5.12, -4.73 & -0.87, -1.18, -0.57 \\
     \label{fig:new_qq}
 \end{figure}
 
+\begin{table}[htbp]
+\caption{Gender Percentage in Runner Groups}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Group} & \textbf{Male (\%)} & \textbf{Female (\%)} & \textbf{Total (\%)} \\
+\hline
+Elite Runners & 93.61 & 6.39 & 0.82 \\
+\hline
+Hobby Runners & 70.30 & 29.70 & 49.23 \\
+\hline
+New Runners & 38.74 & 61.26 & 49.38 \\
+\hline
+\end{tabular}
+\label{tab:gender_percentage}
+\end{center}
+\end{table}
+
 \section{Coding}
 \subsection{Data}
+Temperature humidity are extracted from the years 1950 to 2019 from the meteorologic service of Barcelona. The wind speed is extracted from the same source but years 2007 to 2016.
+Race times are extracted from the marathon results of 2015. We calculated the mean and standard deviation of each group: elite, hobby, and new runners. The results are shown in table \ref{tab:elite_hobby_new_mean_std_dev}.
+
+\begin{table}[htbp]
+\caption{Mean and Standard Deviation of Race Times for Runner Groups}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Group} & \textbf{Mean Time (min)} & \textbf{Standard Deviation (min)} \\
+\hline
+Elite Runners & 153.92 & 10.66 \\
+\hline
+Hobby Runners & 198.63 & 19.24 \\
+\hline
+New Runners & 255.00 & 35.26 \\
+\hline
+\end{tabular}
+\label{tab:elite_hobby_new_mean_std_dev}
+\end{center}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Monthly Temperature and Wind Data}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Month} & \textbf{Max Temp (°C)} & \textbf{Min Temp (°C)} & \textbf{Wind (km/h)} \\
+\hline
+Jan & 11.11 & 5.28 & 16.95 \\
+\hline
+Feb & 12.22 & 5.46 & 14.25 \\
+\hline
+Mar & 14.65 & 7.30 & 14.80 \\
+\hline
+Apr & 16.89 & 8.95 & 12.90 \\
+\hline
+May & 20.53 & 12.32 & 14.00 \\
+\hline
+Jun & 24.60 & 16.12 & 10.65 \\
+\hline
+Jul & 27.84 & 19.00 & 17.65 \\
+\hline
+Aug & 27.71 & 19.08 & 12.75 \\
+\hline
+Sep & 24.42 & 16.67 & 12.10 \\
+\hline
+Oct & 19.99 & 13.23 & 15.85 \\
+\hline
+Nov & 14.74 & 8.83 & 15.15 \\
+\hline
+Dec & 11.75 & 6.22 & 16.35 \\
+\hline
+Avg & 18.00 & 11.00 & 14.00 \\
+\hline
+\end{tabular}
+\label{tab:monthly_temp_wind}
+\end{center}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Monthly Precipitation and Humidity Data}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Month} & \textbf{Precipitation (mm)} & \textbf{Humidity (\%)} \\
+\hline
+Jan & 42.74 & 68 \\
+\hline
+Feb & 36.53 & 65 \\
+\hline
+Mar & 51.46 & 64 \\
+\hline
+Apr & 54.91 & 67 \\
+\hline
+May & 58.24 & 65 \\
+\hline
+Jun & 37.25 & 60 \\
+\hline
+Jul & 28.75 & 63 \\
+\hline
+Aug & 43.68 & 65 \\
+\hline
+Sep & 73.14 & 68 \\
+\hline
+Oct & 88.29 & 72 \\
+\hline
+Nov & 62.91 & 69 \\
+\hline
+Dec & 47.32 & 67 \\
+\hline
+Avg & 55.00 & 66 \\
+\hline
+\end{tabular}
+\label{tab:monthly_precip_humidity}
+\end{center}
+\end{table}
 \section{Definition of the experimental framework}
 \section{Model validation}
 \section{Results/Conclusions}
+% NOT CONVINCED: The temperature effect may not be the most correctly used attribute of the enviorment. The effect of heat is based frm a range between 5 and 24.5 degrees, which is not a very wide range. The wind speed analysis does not seem to explain wind direction. Maybe its usually the same direction in this place.
+
 
 \begin{thebibliography}{00}
 % \bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
