@@ -94,7 +94,44 @@ The model purpose differs from the system purpose. We aim to predict the consequ
     \item \textbf{SS\_01}: The runners will be spleeted in three ``level'' groups based on the first 5 kilometers performance.
     \item \textbf{SD\_01}: The runners will not be affected by ethnics.
     \item \textbf{SD\_02}: The time is transformed with a logarithm function to make it more normal. The results are shown in the figure \ref{fig:elite_hobby_new_standar_deviation} and \ref{fig:new_qq}. The model will ignore the outliers.
+    \item \textbf{SD\_03}: Temperature humidity and wind speed will be combined into three categorical variables (low, medium, high) based on the paper \cite{b8} shown on table \ref{tab:environmental_impact}.
 \end{itemize}
+
+\begin{table}[htbp]
+\caption{Environmental Impact on Marathon Performance}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{} & \textbf{MAN} & \textbf{WOMAN} \\
+\hline
+\textbf{Humidity} & & \\
+\hline
+low & 0, 0 & 0, 0 \\
+\hline
+medium & -1.73, -1.92, -1.54 & -1.74, -2.04, -1.45 \\
+\hline
+high & -2.11, -2.31, -1.90 & -0.90, -1.24, -0.57 \\
+\hline
+\textbf{Temperature} & & \\
+\hline
+low & 0, 0 & 0, 0 \\
+\hline
+medium & 1.19, 1.00, 1.38 & 1.38, 1.09, 1.67 \\
+\hline
+high & 7.73, 7.50, 7.97 & 7.78, 7.37, 8.19 \\
+\hline
+\textbf{Wind Speed} & & \\
+\hline
+low & 0, 0 & 0, 0 \\
+\hline
+medium & -3.18, -3.39, -2.98 & -1.90, -2.22, -1.57 \\
+\hline
+high & -4.92, -5.12, -4.73 & -0.87, -1.18, -0.57 \\
+\hline
+\end{tabular}
+\label{tab:environmental_impact}
+\end{center}
+\end{table}
 
 \begin{figure}[htbp]
     \centerline{\includegraphics[width=\linewidth]{figs/elite_hobby_new_standar_deviation.png}}
