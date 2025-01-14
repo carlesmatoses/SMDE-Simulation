@@ -53,11 +53,11 @@ Reading the paper \cite{b8}, we concluded that, effectively, environmental condi
 \section{System description, introduction}
 % Describe the system to be modeled (not the problem, not the data), other elements must be described on the subsequent sections of the document.
 % Do we need to define what a system is? I don't think so
-The system to be modelled is the ``Barcelona Marathon''. This marathon involves runners of different skill levels, ages, and genders, coming from various cities. The event is influenced by environmental factors such as rainfall and temperature, all of which can impact runner performance. 
+The system to be modelled is the ``Barcelona Marathon''. This marathon involves runners of different skill levels, ages, and genders, coming from various cities. The event is influenced by environmental factors such as humidity and temperature, all of which can impact runner performance. 
 
 Runners rely on essential supplies, including water, food, and medical assistance, to complete the marathon safely. The course is structured as a linear system, where participants progress from one checkpoint to the next. Along the way, they encounter resupply points, which have limited capacities. If demand exceeds supply, queues may form, potentially delaying runners. Environmental conditions also play a significant role in the system, affecting both individual runner performance and the overall flow of the event.
 
-In summary, the system comprises the marathon course, checkpoints, and resupply points, along with the interactions between runners, resources, and environmental conditions.
+In summary, the system comprises the marathon course, sectors, and resupply points, along with the interactions between runners, resources, and environmental conditions.
 
 
 \section{Model specification}
@@ -88,7 +88,7 @@ The operations of the model will be reduced to runners arriving at the end line.
     \item \textbf{End}: The runner finishes the race and the entity is terminated.
 \end{itemize}
 
-A diagram of the model is provided in figures \ref{fig:init_diagram}, \ref{fig:model_diagram}, \ref{fig:end_diagram} and \ref{fig:aux_diagram}
+A diagram of the model is provided in figures \ref{fig:init_diagram}, \ref{fig:model_diagram}, \ref{fig:end_diagram} and \ref{fig:aux_diagram}. The full GPSS code is provided in the annex.
 
 \begin{figure}[]
     \centerline{\includegraphics[width=0.2\linewidth]{figs/init_diag.png}}
@@ -442,6 +442,8 @@ Validating the model is an essential step to ensure that it realistically repres
         \caption{Box plots for the real dataset and the simulated results.}
         \label{fig:blackbox_plot}
     \end{figure}
+
+    \item \textbf{Statistical Validation}
 \end{enumerate}
 
 \begin{table}[htbp]
@@ -522,6 +524,10 @@ Additionally we analyse the results from queue information from the simulation. 
 \label{tab:queue_results}
 \end{center}
 \end{table}
+
+\subsection{Further work}
+
+While we can use these results to make some decisions about the organization of the event the model provided is still fairly simple and limited. An avenue that remains unexplored is a more complete simulation of resupply points, their distribution along the race, supplying different resources at different times, etc. This model provides a basic overview of the effects of bottlenecks in the development of the race but isn't flexible enough to test different scenarios and provide answers that help organize a better and safer competition in this regard.
 
 \newpage
 \onecolumn
