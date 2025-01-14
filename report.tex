@@ -270,7 +270,39 @@ Avg & 55.00 & 66 \\
 \end{center}
 \end{table}
 \section{Definition of the experimental framework}
+\begin{enumerate}
+    \item \textbf{Design of the DOE}
+    
+    To evaluate the effects of key factors on marathon performance, we implemented a basic Design of Experiments (DOE). The factors considered in this study are:
+    \begin{itemize}
+        \item \textbf{Temperature (TEMP)}: Represented as levels (e.g., 0 for low, 1 for medium, and 2 for high).
+        \item \textbf{Humidity (HUM)}: Represented similarly with levels for low, medium, and high.
+        \item \textbf{Supplies (SUPPL)}: Two levels are considered: low (0) and high (1).
+    \end{itemize}
+    The primary goal of the DOE is to identify the optimal combination of these factors that minimises the average time it takes for runners to complete the race. In this context, “best” is defined as achieving the lowest average time while maintaining manageable resource usage.
+    
+    The implementation uses functions to dynamically assign values for these factors to runners during the simulation. Each runner’s performance is calculated using the following formula:
+    \[
+        Run Time = \frac{BaseTime(Mean+StdDev)+TEMPImpact+HUMImpact}{Stages}
+    \]
+    This ensures that the impact of temperature, humidity, and supplies is directly incorporated into the simulation of each runner's race.
+    \item \textbf{Execution of the Replications}
+    
+    The DOE is executed by:
+    \begin{itemize}
+        \item \textbf{Generating runners dynamically}: Runners are created using the GENERATE statement, with their attributes (level, gender, TEMP, HUM) assigned through predefined functions.
+        \item \textbf{Simulating the race}: The simulation progresses through 10 stages, with each runner advancing at a calculated pace based on the environmental factors and their personal attributes.
+        \item \textbf{Replicating the experiment}: For each configuration of factors, multiple runners are simulated to provide robust results. While the current implementation doesn't explicitly iterate through all combinations of factors, the setup allows for adjustments to test specific configurations.
+    \end{itemize}
+    \item \textbf{Detection and Analysis of Interactions}
+    The simulation setup inherently supports the evaluation of both main effects (e.g., how TEMP alone impacts performance) and interactions (e.g., how TEMP and HUM together influence results). These interactions are captured through the combined terms in the runner’s performance calculation.
+    \item \textbf{Summary of Findings}
+    This experimental framework provides a flexible yet powerful way to test different configurations and observe their impact on runner performance.
+    % EXPAND
+\end{enumerate}
 \section{Model validation}
+Validating the model is crucial to ensure it accurately represents the behaviour of a marathon under different weather conditions and resource availability. To do this, we’ve used a mix of validation techniques, following the guidance from relevant literature.
+
 \section{Results/Conclusions}
 % NOT CONVINCED: The temperature effect may not be the most correctly used attribute of the enviorment. The effect of heat is based frm a range between 5 and 24.5 degrees, which is not a very wide range. The wind speed analysis does not seem to explain wind direction. Maybe its usually the same direction in this place.
 
