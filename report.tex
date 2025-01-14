@@ -421,7 +421,8 @@ Validating the model is an essential step to ensure that it realistically repres
 \subsection{Implemented Validation Methods}
 \begin{enumerate}
     \item \textbf{Data Validation}
-    First we validate our group categorization of runners's levels based on their time to reach 5km. Since we use the log of time for the simulaiton and analysis as it better approximates a normal distribution we run an ANOVA test on the equation $ln(time) ~ Level$. We checked the assumptions for the ANOVA test and found that while the normality of distribution is a bit off, the rest of the assumptions hold. The results of the ANOVA in table \ref{tab:anova_validation} show that there is a difference between at least one mean. A further Tukey HSD test reveals that all 3 means are different from each other, so our assumption that the 3 levels correspond to significantly different performance is validated.
+    
+    First we validate our group categorization of runner's levels based on their time to reach 5 km. Since we use the log of time for the simulation and analysis as it better approximates a normal distribution we run an ANOVA test on the equation $ln(time) ~ Level$. We checked the assumptions for the ANOVA test and found that while the normality of distribution is a bit off, the rest of the assumptions hold. The results of the ANOVA in table \ref{tab:anova_validation} show that there is a difference between at least one mean. A further Tukey HSD test reveals that all 3 means are different from each other, so our assumption that the 3 levels correspond to significantly different performance is validated.
 
     The second hypothesis to validate is that the log of time is close enough to a normal distribution. The results of the shapiro-wilk test and the  figures \ref{fig:elite_hobby_new_standar_deviation} and \ref{fig:new_qq} show that only elite runners follow a normal distribution, but while the other groups have some deviations, particularly at the extremes, the bulk of the dataset follows a roughly normal shape.
 
@@ -438,6 +439,7 @@ Validating the model is an essential step to ensure that it realistically repres
     \end{figure}
 
     \item \textbf{Dynamic Validation}
+    
     During the programming of the simulation we performed dynamic validation to ensure the results of the program were in line with the expected ones. We performed a series of white box tests by running a simplified model without gender or runner level variations and without a supply capacity constraint to test the effects of multiple parameters on the main run equation. We verified that the right input values for standard deviation and mean produced the expected output. Additionally, we ran a series of simulations on the simplified model to ensure the effects of temperature and humidity factors were producing the expected differences in time means. Once it has been validated that the correct distributions are being generated variations in terms of runner level and gender were re-enabled as well as supply constraints.
 
     We also performed a black box validation test by entering the data from the Boston Marathon 2015 dataset without any environmental or supply constraints. The result, visible in figure \ref{fig:blackbox_plot} produced a result that is closer to a normal distribution than the real dataset, but performing a t-test reveals with 95\% accuracy that the distributions are equivalent.
@@ -449,6 +451,7 @@ Validating the model is an essential step to ensure that it realistically repres
     \end{figure}
 
     \item \textbf{Statistical Validation}
+    
 \end{enumerate}
 
 \begin{table}[htbp]
