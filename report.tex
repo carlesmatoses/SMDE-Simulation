@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage{comment}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -382,8 +383,11 @@ Avg & 55.00 & 66 \\
     % EXPAND
 \end{enumerate}
 \section{Model validation}
-Validating the model is an essential step to ensure that it realistically represents the marathon and produces meaningful results. To achieve this, we applied several validation techniques as suggested in the literature. Each technique focuses on a specific aspect of the model’s accuracy and reliability.
+Validating the model is an essential step to ensure that it realistically represents the marathon and produces meaningful results. To achieve this, we applied several validation techniques as suggested in the literature \cite{math}. Each technique focuses on a specific aspect of the model’s accuracy and reliability.
 % I defined 5 validations but we can decide which ones to do
+% I commented these methods as we don't do them all
+
+\begin{comment}
 \begin{enumerate}
     \item \textbf{Conceptual Validation}
     \begin{itemize}
@@ -412,6 +416,7 @@ Validating the model is an essential step to ensure that it realistically repres
     \end{itemize}
 
 \end{enumerate}
+\end{comment}
 
 \subsection{Implemented Validation Methods}
 \begin{enumerate}
@@ -664,7 +669,7 @@ END
 % \bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
 % \bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
 \bibitem{b8} B. Knechtle, C. McGrath, O. Goncerz, E. Villiger, P. T. Nikolaidis, T. Marcin, and C. V. Sousa, ``The Role of Environmental Conditions on Master Marathon Running Performance in 1,280,557 Finishers the ‘New York City Marathon’ From 1970 to 2019,'' Frontiers in Physiology, vol. 12, 2021. [Online]. Available: https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2021.665761. DOI: 10.3389/fphys.2021.665761. ISSN: 1664-042X.
-
+\bibitem{math} Fonseca i Casas, P. A Continuous Process for Validation, Verification, and Accreditation of Simulation Models. Mathematics 2023, 11, 845. https://doi.org/10.3390/math11040845
 
 \end{thebibliography}
 \vspace{12pt}
