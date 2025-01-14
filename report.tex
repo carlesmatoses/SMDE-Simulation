@@ -71,23 +71,53 @@ For this model, the entities and attributes are the following:
 % - carles: lo he arreglado un poco añadiendo nuevos atributos y eliminando otros.
 \begin{itemize}
     \item \textbf{Runners}: The runners are the main entities in the system. They have attributes such as age, genre, and city of origin. They interact with the system by running the marathon.
-    \item \textbf{Rainfall}: The rainfall is an environmental attribute that affects the performance of the runners.
     \item \textbf{Temperature}: The temperature is an environmental attribute that affects the performance of the runners.
-    \item \textbf{Wind}: The wind is an environmental attribute .
-    \item \textbf{Humidity}: The humidity is an environmental attribute.
-    \item \textbf{Level}: The level of the runner is determined by the time it takes to finish the first 5. The standard deviation of runners dependens on they're level. 
+    \item \textbf{Humidity}: The humidity is an environmental attribute that affects the performance of the runners.
+    \item \textbf{Level}: The level of a runner is determined randomly following the proportions of the groups in the Boston Marathon dataset. It affects the base time it takes a runner to complete one section of the marathon. Lower level runners follow distributions with larger means and standard deviations.
+    \item \textbf{Gender}: The gender of a runner is determined randomly based on their level following the distribution in the Boston Marathon dataset. It affects how environmental attributes affect their run time.
 \end{itemize}
 
 The operations of the model will be reduced to runners arriving at the end line. The processes of the model will be the following:
 \begin{itemize}
-    \item \textbf{Generate runner}: The model will generate a runner .
-    \item \textbf{Begins running}: The runner starts at the starting line and begins running.
-    \item \textbf{Ends running}: The runner finishes the race.
+    \item \textbf{Generate runners}: The simulation generates and initializes the runners's own attributes.
+    \item \textbf{Start section}: The runner starts running.
+    \item \textbf{Run}: The runner advances to the checkpoint.
+    \item \textbf{Queue}: The runner enters the queue for resupplying.
+    \item \textbf{Resupply}: The runner resupplies and leaves the queue.
+    \item \textbf{Next section}: The runner moves back to "Start section" unless this is the last section.
+    \item \textbf{End}: The runner finishes the race and the entity is terminated.
 \end{itemize}
+
+A diagram of the model is provided in figures \ref{fig:init_diagram}, \ref{fig:model_diagram}, \ref{fig:end_diagram} and \ref{fig:aux_diagram}
+
+\begin{figure}[]
+    \centerline{\includegraphics[width=0.2\linewidth]{figs/init_diag.png}}
+    \caption{Generation and initialization of entities.}
+    \label{fig:init_diagram}
+\end{figure}
+
+\begin{figure}[]
+    \centerline{\includegraphics[width=0.2\linewidth]{figs/model_diag.png}}
+    \caption{Main race flowchart.}
+    \label{fig:model_diagram}
+\end{figure}
+
+\begin{figure}[]
+    \centerline{\includegraphics[width=0.2\linewidth]{figs/end_diag.png}}
+    \caption{End of the race and data processing.}
+    \label{fig:end_diagram}
+\end{figure}
+
+\begin{figure}[]
+    \centerline{\includegraphics[width=0.2\linewidth]{figs/aux_diag.png}}
+    \caption{Auxiliary process for ending the simulation.}
+    \label{fig:aux_diagram}
+\end{figure}
+
 
 In this process, the model will use a normal distributed random variable to determine the time it takes a runner to finish. We created different time ranges to decide the level of a runner. The ``Elite'' runners tend to run 5 km in less than 18 minutes, the ``hobby'' runners take more than 18 minutes and less than 25 and ``new'' runners take more than 25 minutes.
 
-The model purpose differs from the system purpose. We aim to predict the consequences of the environmental conditions on the performance of the runners. The model will help us understand how the rainfall, heat, and other variables affects the performance of the runners.
+The model purpose differs from the system purpose. We aim to predict the consequences of the environmental conditions on the performance of the runners. The model will help us understand how the humidity, heat, and other variables affects the performance of the runners.
 
 
 % I need to know the time required for an elite male runner to finish the race. and then the female elite runner.
@@ -302,7 +332,7 @@ Avg & 55.00 & 66 \\
         \item \textbf{Replicating the experiment}: For each configuration of factors, multiple runners are simulated to provide robust results. Since this isn't a continuous system and has a defined start and end each replica of the experiment restarts the entire simulation. Each combination of high and low values is performed 16 times, which is enough to obtain statistically relevant data with 95\% confidence as demonstrated in tables \ref{tab:rep_significance} and \ref{tab:rep_significance_2}.
     \end{itemize}
 
-    \begin{table}[htbp]
+    \begin{table}[]
     \caption{Results and half ranges for simulation runs}
     \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -328,7 +358,7 @@ Avg & 55.00 & 66 \\
     \end{center}
     \end{table}
 
-    \begin{table}[htbp]
+    \begin{table}[]
     \caption{Results and half ranges for simulation runs}
     \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -394,9 +424,28 @@ Validating the model is an essential step to ensure that it realistically repres
 
 \subsection{Implemented Validation Methods}
 \begin{enumerate}
+    \item \textbf{Data Validation}
+    We validate our group categorization of runners's levels based on their time to reach 5km. Since we use the log of time for the simulaiton and analysis as it better approximates a normal distribution we run an ANOVA test on the equation $ln(time) ~ Level$. We checked the assumptions for the ANOVA test and found that while the normality of distribution is a bit off, the rest of the assumptions hold. The results of the ANOVA in table \ref{tab:anova_validation} show that there is a difference between at least one mean. A further Tukey HSD test reveals that all 3 means are different from each other, so our assumption that the 3 levels correspond to significantly different performance is validated.
+
     \item \textbf{Dynamic Validation}
     During the programming of the simulation we performed dynamic validation to ensure the results of the program were in line with the expected ones. We ran a simplified model without gender or runner level variations and without a supply capacity constraint to test the effects of multiple parameters on the main run equation. We verified that the right input values for standard deviation and mean produced the expected output. Additionally, we ran a series of simulations on the simplified model to ensure the effects of temperature and humidity factors were producing the expected differences in time means. Once it has been validated that the correct distributions are being generated variations in terms of runner level and gender were re-enabled as well as supply constraints.
 \end{enumerate}
+
+\begin{table}[htbp]
+\caption{ANOVA Table for runner groups}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+    & \textbf{Df} & \textbf{Sum Sq} & \textbf{Mean Sq} & \textbf{F value} & \textbf{p value}\\
+\hline
+\textbf{Level} & 2&426.0&212.99&16387&\textless2e-16\\
+\hline
+\textbf{Residuals} & 26442&343.7&0.01&&\\
+\hline
+\end{tabular}
+\label{tab:anova_validation}
+\end{center}
+\end{table}
 
 \section{Results/Conclusions}
 % NOT CONVINCED: The temperature effect may not be the most correctly used attribute of the enviorment. The effect of heat is based frm a range between 5 and 24.5 degrees, which is not a very wide range. The wind speed analysis does not seem to explain wind direction. Maybe its usually the same direction in this place.
@@ -464,7 +513,7 @@ Additionally we analyse the results from queue information from the simulation. 
 \newpage
 \section{Annex}
 
-\begin{table}[htbp]
+\begin{table}[]
 \caption{Effects of factors on mean time to finish}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
