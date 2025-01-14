@@ -388,27 +388,27 @@ Validating the model is an essential step to ensure that it realistically repres
     \item \textbf{Conceptual Validation}
     \begin{itemize}
         \item \textbf{Objective}: To confirm that the model’s structure and assumptions are consistent with real-world behaviour.
-        \item \textbf{Approach}: We reviewed the model’s assumptions, such as the simplification that runners maintain a constant speed within each stage, against insights from previous studies on marathon performance. Additionally, the logic and processes implemented in the simulation were compared with known dynamics of marathon events to ensure consistency.
+        \item \textbf{Approach}: Reviewing the model’s assumptions, such as the simplification that runners maintain a constant speed within each stage, against insights from previous studies on marathon performance. Additionally, the logic and processes implemented in the simulation is compared with known dynamics of marathon events to ensure consistency.
     \end{itemize}
     \item \textbf{Data Validation}
         \begin{itemize}
         \item \textbf{Objective}: To verify that the input data is accurate and suitable for the simulation.
-        \item \textbf{Approach}: Historical weather data from Observatori Fabra was cross-checked with official sources to ensure its reliability. Runners’ attributes, such as performance levels and physiological factors, were validated against publicly available datasets (e.g., Kaggle marathon data).
+        \item \textbf{Approach}: Historical weather data from Observatori Fabra is cross-checked with official sources to ensure its reliability. Runners’ attributes, such as performance levels and physiological factors, are validated against publicly available datasets (e.g., Kaggle marathon data). Our assumptions about data are tested and confirmed against our input data.
     \end{itemize}
     \item \textbf{Dynamic Validation}
         \begin{itemize}
         \item \textbf{Objective}: To ensure the model’s behaviour aligns with expectations during the simulation.
-        \item \textbf{Approach}: Step-by-step checks of simulation outputs were conducted to verify that changes in inputs (e.g., temperature or humidity) produced logical trends, such as higher temperatures leading to longer completion times. A sensitivity analysis was performed to identify the influence of minor input variations on the results.
+        \item \textbf{Approach}: Step-by-step white-box checks of simulation outputs is conducted to verify that changes in inputs (e.g., temperature or humidity) produce logical trends, such as higher temperatures leading to longer completion times. A black box test is performed to verify the output is correct.
     \end{itemize}
     \item \textbf{Predictive Validation}
         \begin{itemize}
         \item \textbf{Objective}: To evaluate the model’s ability to replicate real-world results.
-        \item \textbf{Approach}: Outputs from the simulation were compared to actual data from the Barcelona Marathon and other similar events, focusing on key metrics such as average completion times under comparable weather conditions.
+        \item \textbf{Approach}: Outputs from the simulation are compared to actual data from the Barcelona Marathon and other similar events, focusing on key metrics such as average completion times under comparable weather conditions.
     \end{itemize}
     \item \textbf{Statistical Validation}
         \begin{itemize}
         \item \textbf{Objective}: To ensure the results of the simulation are statistically robust and reliable.
-        \item \textbf{Approach}: Statistical tests, including ANOVA, were used to evaluate whether differences in race times across various conditions were statistically significant. Tests for normality and variance homogeneity were applied to validate the assumptions required for further analysis.
+        \item \textbf{Approach}: Statistical tests, including ANOVA, are used to evaluate whether differences in race times across various conditions are statistically significant. Tests for normality and variance homogeneity are applied to validate the assumptions required for further analysis.
     \end{itemize}
 
 \end{enumerate}
