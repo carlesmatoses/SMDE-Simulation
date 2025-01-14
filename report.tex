@@ -275,31 +275,89 @@ Avg & 55.00 & 66 \\
     
     To evaluate the effects of key factors on marathon performance, we implemented a basic Design of Experiments (DOE). The factors considered in this study are:
     \begin{itemize}
-        \item \textbf{Temperature (TEMP)}: Represented as levels (e.g., 0 for low, 1 for medium, and 2 for high).
-        \item \textbf{Humidity (HUM)}: Represented similarly with levels for low, medium, and high.
-        \item \textbf{Supplies (SUPPL)}: Two levels are considered: low (0) and high (1).
+        \item \textbf{Temperature}: Low and high represent the effects of low temperature and high temperature as identified in the preliminary marathon study \cite{b8}. Medium temperature is also modelled but not tested.
+        \item \textbf{Humidity}: Represented similarly as the effects of low and high humidity in the same study. Likewise medium humidity is not tested.
+        \item \textbf{Supplies}: Low supplies represents the capacity to supply 200 people at once in any given supply point, high represents the capacity to supply 500 people at once.
     \end{itemize}
-    The primary goal of the DOE is to identify the optimal combination of these factors that minimises the average time it takes for runners to complete the race. In this context, “best” is defined as achieving the lowest average time while maintaining manageable resource usage.
+
+    Due to limitations in the version of GPSS we run only $1/10$th of the runners, 2000 in total, and also divide the supply availability by 10, taking the final values of 20 and 50.
+
+    The primary goal of the DOE is to identify the optimal combination of these factors that minimises the average time it takes for runners to complete the race. In this context, “best” is defined as achieving the lowest average time while maintaining manageable resource usage. Additionally, we use analyse the queues formed during the runtime of the simulation to identify bottlenecks related to resource availability and how to best allocate them.
     
     The implementation uses functions to dynamically assign values for these factors to runners during the simulation. Each runner’s performance is calculated using the following formula:
 
     % I don't know how to put it smaller
     \[
-        Run Time = \frac{BaseTime(Mean+StdDev)+TEMPImpact+HUMImpact}{Stages}
+        Run Time = \frac{e^t+Temp+Humidity}{Stages}
     \]
-    This ensures that the impact of temperature, humidity, and supplies is directly incorporated into the simulation of each runner's race.
+
+    Where $t$ is a random value following a normal distribution with the values identified from preliminary data analysis. This ensures that the impact of temperature, humidity, and supplies is directly incorporated into the simulation of each runner's race.
+
     \item \textbf{Execution of the Replications}
     
     The DOE is executed by:
     \begin{itemize}
         \item \textbf{Generating runners dynamically}: Runners are created using the GENERATE statement, with their attributes (level, gender, TEMP, HUM) assigned through predefined functions.
         \item \textbf{Simulating the race}: The simulation progresses through 10 stages, with each runner advancing at a calculated pace based on the environmental factors and their personal attributes.
-        \item \textbf{Replicating the experiment}: For each configuration of factors, multiple runners are simulated to provide robust results. While the current implementation doesn't explicitly iterate through all combinations of factors, the setup allows for adjustments to test specific configurations.
+        \item \textbf{Replicating the experiment}: For each configuration of factors, multiple runners are simulated to provide robust results. Since this isn't a continuous system and has a defined start and end each replica of the experiment restarts the entire simulation. Each combination of high and low values is performed 16 times, which is enough to obtain statistically relevant data with 95\% confidence as demonstrated in tables \ref{tab:rep_significance} and \ref{tab:rep_significance_2}.
     \end{itemize}
+
+    \begin{table}[htbp]
+    \caption{Results and half ranges for simulation runs}
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+    \hline
+    \textbf{Temperature} & - & + & - & + \\
+    \hline
+    \textbf{Humidity} & - & - & + & + \\
+    \hline
+    \textbf{Supplies} &+&+&+&+ \\
+    \hline
+    \textbf{Res. Mean} & 14588,87&15051,87&14489,60&14952,23 \\
+    \hline
+    \textbf{S2}& 6751,25&7171,83&5285,16&4787,46 \\
+    \hline
+    \textbf{Variance}&3667,11&3783,47&3640,00&3754,81\\
+    \hline
+    \textbf{h} &43,548&44,884&38,531&36,671\\
+    \hline
+    \textbf{Desired h}&729,44&752,59&724,48&747,61\\
+    \hline
+    \end{tabular}
+    \label{tab:rep_significance}
+    \end{center}
+    \end{table}
+
+    \begin{table}[htbp]
+    \caption{Results and half ranges for simulation runs}
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+    \hline
+    \textbf{Temperature} & - & + & - & + \\
+    \hline
+    \textbf{Humidity} & - & - & + & + \\
+    \hline
+    \textbf{Supplies} &+&+&+&+ \\
+    \hline
+    \textbf{Res. Mean} & 14588,87&15051,87&14489,60&14952,23 \\
+    \hline
+    \textbf{S2}& 6751,25&7171,83&5285,16&4787,46 \\
+    \hline
+    \textbf{Variance}&3667,11&3783,47&3640,00&3754,81\\
+    \hline
+    \textbf{h}&43,548&44,884&38,531&36,671\\
+    \hline
+    \textbf{Desired h}&729,44&752,59&724,48&747,61\\
+    \hline
+    \end{tabular}
+    \label{tab:rep_significance_2}
+    \end{center}
+    \end{table}
+
     \item \textbf{Detection and Analysis of Interactions}
-    The simulation setup inherently supports the evaluation of both main effects (e.g., how TEMP alone impacts performance) and interactions (e.g., how TEMP and HUM together influence results). These interactions are captured through the combined terms in the runner’s performance calculation.
+    The simulation setup inherently supports the evaluation of both main effects (e.g., how TEMP alone impacts performance) and interactions (e.g., how TEMP and HUM together influence results). The effects and interactions are computed using the Yates algorithm which can be found in the Annex.
     \item \textbf{Summary of Findings}
-    This experimental framework provides a flexible yet powerful way to test different configurations and observe their impact on runner performance.
+    Through running multiple replications of the simulation with different setups we identified that the main factor on the mean time to complete the race is the bottlenecks created by poor supply availability. As for climate effects the main factor is temperature, which should be minimized.
     % EXPAND
 \end{enumerate}
 \section{Model validation}
@@ -334,8 +392,98 @@ Validating the model is an essential step to ensure that it realistically repres
 
 \end{enumerate}
 
+\subsection{Implemented Validation Methods}
+\begin{enumerate}
+    \item \textbf{Dynamic Validation}
+    During the programming of the simulation we performed dynamic validation to ensure the results of the program were in line with the expected ones. We ran a simplified model without gender or runner level variations and without a supply capacity constraint to test the effects of multiple parameters on the main run equation. We verified that the right input values for standard deviation and mean produced the expected output. Additionally, we ran a series of simulations on the simplified model to ensure the effects of temperature and humidity factors were producing the expected differences in time means. Once it has been validated that the correct distributions are being generated variations in terms of runner level and gender were re-enabled as well as supply constraints.
+\end{enumerate}
+
 \section{Results/Conclusions}
 % NOT CONVINCED: The temperature effect may not be the most correctly used attribute of the enviorment. The effect of heat is based frm a range between 5 and 24.5 degrees, which is not a very wide range. The wind speed analysis does not seem to explain wind direction. Maybe its usually the same direction in this place.
+
+By analysing the results of the simulation we can identify the most important factors in minimizing mean time to completion for the race. As illustrated in table \ref{tab:results}, these are mainly the availability of supplies followed by temperature (which should be minimized) and humidity (which should be maximized). The effect of interactions is comparatively very small but we can see that even though both supplies and humidity on their own reduce the race time, together they have an interaction that causes it to increase. This can likely be explained by lower times causing runners to bunch up, overcrowding resupply points.
+
+\begin{table}[htbp]
+\caption{Effects of factors on mean time to finish}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Temperature} & 462,680\\
+\hline
+\textbf{Humidity} & -99,483\\
+\hline
+\textbf{Supplies} & -686,567\\
+\hline
+\textbf{Temperature and Humidity} & 1,504\\
+\hline
+\textbf{Temperature and Supplies}& 0,133\\
+\hline
+\textbf{Humidity and Supplies}&0,023\\
+\hline
+\textbf{All}&-1,691\\
+\hline
+\end{tabular}
+\label{tab:results}
+\end{center}
+\end{table}
+
+Additionally we analyse the results from queue information from the simulation. We can see that even in the worst case we can by the time runners reached the end of the race they were spread out enough to not cause overcrowding of any station, while in the beginning of the race only about 5\% of runners were able to access them without queueing. This suggests that a more important factor to consider rather than global resource availability is how to distribute them along the race in ways that can be accessed by large crowds near the beginning.
+
+\begin{table}[htbp]
+\caption{Queue utilization for one simulation run (high temp. low hum. low sup.)}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Sup. point}&\textbf{Max. cont.}&\textbf{Avg. cont.}&\textbf{Zero ent.}&\textbf{Pct. zero}\\
+\hline
+1&858&58.79&96&4.80\\
+\hline
+2&27&0.36&1259&62.95\\
+\hline
+3&19&0.14&1574&78.70\\
+\hline
+4&10&0.02&1886&94.30\\
+\hline
+5&10&0.01&1937&96.85\\
+\hline
+6&5&0.00&1960&98.00\\
+\hline
+7&3&0.00&1990&99.50\\
+\hline
+8&1&0.00&1999&99.95\\
+\hline
+9&0&0.00&2000&100.00\\
+\hline
+10&0&0.00&2000&100.00\\
+\hline
+\end{tabular}
+\label{tab:queue_results}
+\end{center}
+\end{table}
+
+\newpage
+\section{Annex}
+
+\begin{table}[htbp]
+\caption{Effects of factors on mean time to finish}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Temp}&\textbf{Hum}&\textbf{Sup}&\textbf{Mean}&&&&\textbf{Effect}&\textbf{Meaning} \\
+\hline
+-&-&-&15277,28625&31013,925&61828,838125&120911,40875&15113,92609375&Mean \\
++&-&-&15736,63875&30814,913125&59082,570625&1850,72125&462,6803125&Temp \\
+-&+&-&15174,585&29640,745625&925,095625&-397,9325&-99,483125&Humidity \\
++&+&-&15640,328125&29441,825&925,625625&6,0175&1,504375&Temp + Hum \\
+-&-&+&14588,873125&459,3525&-199,011875&-2746,2675&-686,566875&Supplies \\
++&-&+&15051,8725&465,743125&-198,920625&0,53&0,1325&Temp + Sup \\ 
+-&+&+&14489,599375&462,999375&6,390625&0,09125&0,0228125&Hum + Sup \\
++&+&+&14952,225625&462,62625&-0,373125&-6,76375&-1,6909375&All \\
+\hline
+\end{tabular}
+\label{tab:rep_significance_2}
+\end{center}
+\end{table}
 
 
 \begin{thebibliography}{00}
