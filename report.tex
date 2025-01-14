@@ -117,7 +117,7 @@ A diagram of the model is provided in figures \ref{fig:init_diagram}, \ref{fig:m
 
 In this process, the model will use a normal distributed random variable to determine the time it takes a runner to finish. We created different time ranges to decide the level of a runner. The ``Elite'' runners tend to run 5 km in less than 18 minutes, the ``hobby'' runners take more than 18 minutes and less than 25 and ``new'' runners take more than 25 minutes.
 
-The model purpose differs from the system purpose. We aim to predict the consequences of the environmental conditions on the performance of the runners. The model will help us understand how the humidity, heat, and other variables affects the performance of the runners.
+The model purpose differs from the system purpose. We aim to predict the consequences of the environmental conditions on the performance of the runners. The model will help us understand how the humidity, heat, and other variables affects the performance of the runners. Additionally we want to measure the possible effects of bottlenecks due to supply constraints.
 
 
 % I need to know the time required for an elite male runner to finish the race. and then the female elite runner.
@@ -125,13 +125,16 @@ The model purpose differs from the system purpose. We aim to predict the consequ
 \subsection{Systemic Structural, Systemic Data and Simplifying Hypotheses}
 
 \begin{itemize}
-    \item \textbf{SH\_01}: The runners will keep a constant speed over the race. Only the required time to finish the race will matter.
-    \item \textbf{SH\_02}: Heat, wind and rain will be combined into a single value computed by a formula.
-    \item \textbf{SH\_03}: Temperature wind and humidity change over the day, usually there is more wind later on the day than at morning, temperatures rise and humidity drops. The model will ignore this fact to eventually decreese as the sun gets down. The model will not account for this behaviour and will only take the average values of the day.
-    \item \textbf{SS\_01}: The runners will be split in three ``level'' groups based on the performance of the first 5 km.
-    \item \textbf{SD\_01}: The runners will not be affected by ethnics or age. An Elite runner with 70 years will be classified based on the time it takes to finish the first 5 km and not his status.
-    \item \textbf{SD\_02}: The time is transformed with a logarithm function to make it more normal. The results of the shapiro-wilk test and the  figures \ref{fig:elite_hobby_new_standar_deviation} and \ref{fig:new_qq} show that only elite runners follow a normal distribution. The model will ignore the outliers.
-    \item \textbf{SD\_03}: Temperature humidity and wind speed will be combined into three categorical variables (low, medium, high) based on the paper \cite{b8} shown on table \ref{tab:environmental_impact}.
+    \item \textbf{SS\_01}: The runners will be split in three ``level'' groups based on the performance of the first 5 km. Different groups run at different speeds.
+    \item \textbf{SS\_02}: Temperature and humidity will affect the speed of runners.
+    \item \textbf{SS\_03}: After each sector there will be a resupply point and runners will queue for it.
+    \item \textbf{SS\_04}: The race will have 10 sectors.
+    \item \textbf{SH\_01}: Runners will keep a constant speed over each sector, the average speed over all sectors will be the same.
+    \item \textbf{SH\_02}: Male and female runners will have the same based speed according to their level.
+    \item \textbf{SH\_03}: Runners take an average of 30 seconds to resupply, following a uniform distribution of 20 seconds of half spread.
+    \item \textbf{SD\_04}: All runners are affected by environmental effects in the same way according to their gender.
+    \item \textbf{SD\_01}: The 3 level groups represent statistically different groups with different times and paces.
+    \item \textbf{SD\_02}: The log of the total time is approximate enough to a normal distribution.
 \end{itemize}
 
 % TODO: maybe remove the 
@@ -170,18 +173,6 @@ high & -4.92, 0.2 & -0.87, 0.3 \\
 \label{tab:environmental_impact}
 \end{center}
 \end{table}
-
-\begin{figure}[htbp]
-    \centerline{\includegraphics[width=\linewidth]{figs/elite_hobby_new_standar_deviation.png}}
-    \caption{Standard deviation of race times for elite, hobby, and new runners.}
-    \label{fig:elite_hobby_new_standar_deviation}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centerline{\includegraphics[width=\linewidth]{figs/elite_hobby_new_qq.png}}
-    \caption{Q-Q plot for new runners.}
-    \label{fig:new_qq}
-\end{figure}
 
 \begin{table}[htbp]
 \caption{Gender Percentage in Runner Groups}
@@ -327,7 +318,7 @@ Avg & 55.00 & 66 \\
     
     The DOE is executed by:
     \begin{itemize}
-        \item \textbf{Generating runners dynamically}: Runners are created using the GENERATE statement, with their attributes (level, gender, TEMP, HUM) assigned through predefined functions.
+        \item \textbf{Generating runners dynamically}: Runners are created and their properties are initialized following distributions from the Boston Marathon dataset.
         \item \textbf{Simulating the race}: The simulation progresses through 10 stages, with each runner advancing at a calculated pace based on the environmental factors and their personal attributes.
         \item \textbf{Replicating the experiment}: For each configuration of factors, multiple runners are simulated to provide robust results. Since this isn't a continuous system and has a defined start and end each replica of the experiment restarts the entire simulation. Each combination of high and low values is performed 16 times, which is enough to obtain statistically relevant data with 95\% confidence as demonstrated in tables \ref{tab:rep_significance} and \ref{tab:rep_significance_2}.
     \end{itemize}
@@ -425,10 +416,32 @@ Validating the model is an essential step to ensure that it realistically repres
 \subsection{Implemented Validation Methods}
 \begin{enumerate}
     \item \textbf{Data Validation}
-    We validate our group categorization of runners's levels based on their time to reach 5km. Since we use the log of time for the simulaiton and analysis as it better approximates a normal distribution we run an ANOVA test on the equation $ln(time) ~ Level$. We checked the assumptions for the ANOVA test and found that while the normality of distribution is a bit off, the rest of the assumptions hold. The results of the ANOVA in table \ref{tab:anova_validation} show that there is a difference between at least one mean. A further Tukey HSD test reveals that all 3 means are different from each other, so our assumption that the 3 levels correspond to significantly different performance is validated.
+    First we validate our group categorization of runners's levels based on their time to reach 5km. Since we use the log of time for the simulaiton and analysis as it better approximates a normal distribution we run an ANOVA test on the equation $ln(time) ~ Level$. We checked the assumptions for the ANOVA test and found that while the normality of distribution is a bit off, the rest of the assumptions hold. The results of the ANOVA in table \ref{tab:anova_validation} show that there is a difference between at least one mean. A further Tukey HSD test reveals that all 3 means are different from each other, so our assumption that the 3 levels correspond to significantly different performance is validated.
+
+    The second hypothesis to validate is that the log of time is close enough to a normal distribution. The results of the shapiro-wilk test and the  figures \ref{fig:elite_hobby_new_standar_deviation} and \ref{fig:new_qq} show that only elite runners follow a normal distribution, but while the other groups have some deviations, particularly at the extremes, the bulk of the dataset follows a roughly normal shape.
+
+    \begin{figure}[htbp]
+        \centerline{\includegraphics[width=\linewidth]{figs/elite_hobby_new_standar_deviation.png}}
+        \caption{Standard deviation of race times for elite, hobby, and new runners.}
+        \label{fig:elite_hobby_new_standar_deviation}
+    \end{figure}
+    
+    \begin{figure}[htbp]
+        \centerline{\includegraphics[width=\linewidth]{figs/elite_hobby_new_qq.png}}
+        \caption{Q-Q plot for new runners.}
+        \label{fig:new_qq}
+    \end{figure}
 
     \item \textbf{Dynamic Validation}
-    During the programming of the simulation we performed dynamic validation to ensure the results of the program were in line with the expected ones. We ran a simplified model without gender or runner level variations and without a supply capacity constraint to test the effects of multiple parameters on the main run equation. We verified that the right input values for standard deviation and mean produced the expected output. Additionally, we ran a series of simulations on the simplified model to ensure the effects of temperature and humidity factors were producing the expected differences in time means. Once it has been validated that the correct distributions are being generated variations in terms of runner level and gender were re-enabled as well as supply constraints.
+    During the programming of the simulation we performed dynamic validation to ensure the results of the program were in line with the expected ones. We performed a series of white box tests by running a simplified model without gender or runner level variations and without a supply capacity constraint to test the effects of multiple parameters on the main run equation. We verified that the right input values for standard deviation and mean produced the expected output. Additionally, we ran a series of simulations on the simplified model to ensure the effects of temperature and humidity factors were producing the expected differences in time means. Once it has been validated that the correct distributions are being generated variations in terms of runner level and gender were re-enabled as well as supply constraints.
+
+    We also performed a black box validation test by entering the data from the Boston Marathon 2015 dataset without any environmental or supply constraints. The result, visible in figure \ref{fig:blackbox_plot} produced a result that is closer to a normal distribution than the real dataset, but performing a t-test reveals with 95\% accuracy that the distributions are equivalent.
+
+    \begin{figure}[htbp]
+        \centerline{\includegraphics[width=\linewidth]{figs/blackbox_plot.png}}
+        \caption{Box plots for the real dataset and the simulated results.}
+        \label{fig:blackbox_plot}
+    \end{figure}
 \end{enumerate}
 
 \begin{table}[htbp]
@@ -511,9 +524,10 @@ Additionally we analyse the results from queue information from the simulation. 
 \end{table}
 
 \newpage
+\onecolumn
 \section{Annex}
 
-\begin{table}[]
+\begin{table}[h]
 \caption{Effects of factors on mean time to finish}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -533,6 +547,106 @@ Additionally we analyse the results from queue information from the simulation. 
 \label{tab:rep_significance_2}
 \end{center}
 \end{table}
+
+GPSS Simulation code:
+\begin{verbatim}
+SIMULATE 16
+
+LEVEL FUNCTION RN1,R
+0 82
+1 4923
+2 4938
+GENE FUNCTION RN1,R
+0 9360
+1 639
+GENH FUNCTION RN1,R
+0 7030
+1 2970
+GENN FUNCTION RN1,R
+0 3873
+1 6126
+RMEAN FUNCTION P$LEVEL,D
+0 9.128
+1 9.381
+2 9.627
+RSTD FUNCTION P$LEVEL,D
+0 0.26298
+1 0.30842
+2 0.36145
+HUM FUNCTION P$HUM,D
+0 0
+1 0
+2 -103.8
+3 -104.4
+4 -126.6
+5 -71.4
+TEMP FUNCTION P$TEMP,D
+0 0
+1 0
+2 71.4
+3 82.8
+4 463.8
+5 466.8
+LET X$STAGES=10
+! Humidity value
+INPUT X$HUM
+LET X$SUPPL=20
+! Temperature value
+INPUT X$TEMP
+1 CAPACITY X$SUPPL
+2 CAPACITY X$SUPPL
+3 CAPACITY X$SUPPL
+4 CAPACITY X$SUPPL
+5 CAPACITY X$SUPPL
+6 CAPACITY X$SUPPL
+7 CAPACITY X$SUPPL
+8 CAPACITY X$SUPPL
+9 CAPACITY X$SUPPL
+10 CAPACITY X$SUPPL
+RACE CAPACITY
+Times TABLE P$TIME,0,1,1
+TimLog TABLE P$TLOG,0,1,1
+GENE VALUEOF FN$GENE*FN$EQ0(P$LEVEL)
+GENH VALUEOF FN$GENH*FN$EQ0(P$LEVEL-1)
+GENN VALUEOF FN$GENN*FN$EQ0(P$LEVEL-2)
+GENDER VALUEOF V$GENE+V$GENH+V$GENN
+TEMP VALUEOF X$TEMP*2+P$GENDER
+HUM VALUEOF X$HUM*2+P$GENDER
+RUN VALUEOF (FN$EXP(FN$SNORM*P$STD+P$MEAN)+FN$TEMP+FN$HUM)/X$STAGES
+	GENERATE 0,,0,2000,2
+* INITIALIZE  RUNNERS
+	LET P$STAGE=1
+	LET P$LEVEL=FN$LEVEL
+	LET P$GENDER=V$GENDER
+	LET P$TEMP=V$TEMP
+	LET P$HUM=V$HUM
+	LET P$MEAN=FN$RMEAN
+	LET P$STD=FN$RSTD
+* RACE SIMULATION
+RACE_START	ENTER RACE
+STAGE_START	ADVANCE V$RUN
+	ARRIVE P$STAGE
+	ENTER P$STAGE
+	DEPART P$STAGE
+	ADVANCE 30,20
+	LEAVE P$STAGE
+	LET+ P$STAGE,1
+	IF P$STAGE<=X$STAGES,STAGE_START
+	LEAVE RACE
+	LET P$TIME=CL
+	LET P$TLOG=FN$LOG(P$TIME)
+	TABULATE Times
+	TERMINATE 
+* RACE CONTROL
+
+	GENERATE ,,,1,0
+	WAITIF RACE=NE
+	TERMINATE 1
+
+START 1
+END
+
+\end{verbatim}
 
 
 \begin{thebibliography}{00}
