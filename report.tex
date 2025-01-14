@@ -282,6 +282,8 @@ Avg & 55.00 & 66 \\
     The primary goal of the DOE is to identify the optimal combination of these factors that minimises the average time it takes for runners to complete the race. In this context, “best” is defined as achieving the lowest average time while maintaining manageable resource usage.
     
     The implementation uses functions to dynamically assign values for these factors to runners during the simulation. Each runner’s performance is calculated using the following formula:
+
+    % I don't know how to put it smaller
     \[
         Run Time = \frac{BaseTime(Mean+StdDev)+TEMPImpact+HUMImpact}{Stages}
     \]
@@ -301,7 +303,36 @@ Avg & 55.00 & 66 \\
     % EXPAND
 \end{enumerate}
 \section{Model validation}
-Validating the model is crucial to ensure it accurately represents the behaviour of a marathon under different weather conditions and resource availability. To do this, we’ve used a mix of validation techniques, following the guidance from relevant literature.
+Validating the model is an essential step to ensure that it realistically represents the marathon and produces meaningful results. To achieve this, we applied several validation techniques as suggested in the literature. Each technique focuses on a specific aspect of the model’s accuracy and reliability.
+% I defined 5 validations but we can decide which ones to do
+\begin{enumerate}
+    \item \textbf{Conceptual Validation}
+    \begin{itemize}
+        \item \textbf{Objective}: To confirm that the model’s structure and assumptions are consistent with real-world behaviour.
+        \item \textbf{Approach}: We reviewed the model’s assumptions, such as the simplification that runners maintain a constant speed within each stage, against insights from previous studies on marathon performance. Additionally, the logic and processes implemented in the simulation were compared with known dynamics of marathon events to ensure consistency.
+    \end{itemize}
+    \item \textbf{Data Validation}
+        \begin{itemize}
+        \item \textbf{Objective}: To verify that the input data is accurate and suitable for the simulation.
+        \item \textbf{Approach}: Historical weather data from Observatori Fabra was cross-checked with official sources to ensure its reliability. Runners’ attributes, such as performance levels and physiological factors, were validated against publicly available datasets (e.g., Kaggle marathon data).
+    \end{itemize}
+    \item \textbf{Dynamic Validation}
+        \begin{itemize}
+        \item \textbf{Objective}: To ensure the model’s behaviour aligns with expectations during the simulation.
+        \item \textbf{Approach}: Step-by-step checks of simulation outputs were conducted to verify that changes in inputs (e.g., temperature or humidity) produced logical trends, such as higher temperatures leading to longer completion times. A sensitivity analysis was performed to identify the influence of minor input variations on the results.
+    \end{itemize}
+    \item \textbf{Predictive Validation}
+        \begin{itemize}
+        \item \textbf{Objective}: To evaluate the model’s ability to replicate real-world results.
+        \item \textbf{Approach}: Outputs from the simulation were compared to actual data from the Barcelona Marathon and other similar events, focusing on key metrics such as average completion times under comparable weather conditions.
+    \end{itemize}
+    \item \textbf{Statistical Validation}
+        \begin{itemize}
+        \item \textbf{Objective}: To ensure the results of the simulation are statistically robust and reliable.
+        \item \textbf{Approach}: Statistical tests, including ANOVA, were used to evaluate whether differences in race times across various conditions were statistically significant. Tests for normality and variance homogeneity were applied to validate the assumptions required for further analysis.
+    \end{itemize}
+
+\end{enumerate}
 
 \section{Results/Conclusions}
 % NOT CONVINCED: The temperature effect may not be the most correctly used attribute of the enviorment. The effect of heat is based frm a range between 5 and 24.5 degrees, which is not a very wide range. The wind speed analysis does not seem to explain wind direction. Maybe its usually the same direction in this place.
